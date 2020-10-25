@@ -1,3 +1,4 @@
+#include<stdio.h>
 #pragma once
 
 namespace Lab4CarlosLaparra1031120 {
@@ -9,6 +10,8 @@ namespace Lab4CarlosLaparra1031120 {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::IO;
+	using namespace System::Diagnostics;
+	using namespace System ::Threading;
 
 	/// <summary>
 	/// Resumen de MyForm2
@@ -45,6 +48,9 @@ namespace Lab4CarlosLaparra1031120 {
 	private: System::Windows::Forms::Button^ btn_Merge;
 
 	private: System::Windows::Forms::Button^ btn_Bubble;
+	private: System::Windows::Forms::Timer^ timer;
+	private: System::Windows::Forms::Label^ lbl_tiempo;
+	private: System::ComponentModel::IContainer^ components;
 
 
 	protected:
@@ -53,7 +59,7 @@ namespace Lab4CarlosLaparra1031120 {
 		/// <summary>
 		/// Variable del diseñador necesaria.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -62,6 +68,7 @@ namespace Lab4CarlosLaparra1031120 {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->components = (gcnew System::ComponentModel::Container());
 			this->lbl_Violencia = (gcnew System::Windows::Forms::Label());
 			this->ofd_Importar = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->btn_Importar = (gcnew System::Windows::Forms::Button());
@@ -71,6 +78,8 @@ namespace Lab4CarlosLaparra1031120 {
 			this->btn_Quick = (gcnew System::Windows::Forms::Button());
 			this->btn_Merge = (gcnew System::Windows::Forms::Button());
 			this->btn_Bubble = (gcnew System::Windows::Forms::Button());
+			this->timer = (gcnew System::Windows::Forms::Timer(this->components));
+			this->lbl_tiempo = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// lbl_Violencia
@@ -153,12 +162,28 @@ namespace Lab4CarlosLaparra1031120 {
 			this->btn_Bubble->UseVisualStyleBackColor = true;
 			this->btn_Bubble->Click += gcnew System::EventHandler(this, &MyForm2::btn_Bubble_Click);
 			// 
+			// timer
+			// 
+			this->timer->Tick += gcnew System::EventHandler(this, &MyForm2::timer_Tick);
+			// 
+			// lbl_tiempo
+			// 
+			this->lbl_tiempo->AutoSize = true;
+			this->lbl_tiempo->BackColor = System::Drawing::Color::Transparent;
+			this->lbl_tiempo->Font = (gcnew System::Drawing::Font(L"Nobile", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lbl_tiempo->Location = System::Drawing::Point(208, 416);
+			this->lbl_tiempo->Name = L"lbl_tiempo";
+			this->lbl_tiempo->Size = System::Drawing::Size(0, 38);
+			this->lbl_tiempo->TabIndex = 10;
+			// 
 			// MyForm2
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
-			this->ClientSize = System::Drawing::Size(758, 451);
+			this->ClientSize = System::Drawing::Size(758, 463);
+			this->Controls->Add(this->lbl_tiempo);
 			this->Controls->Add(this->btn_Bubble);
 			this->Controls->Add(this->btn_Merge);
 			this->Controls->Add(this->btn_Quick);
@@ -169,13 +194,15 @@ namespace Lab4CarlosLaparra1031120 {
 			this->Controls->Add(this->lbl_Violencia);
 			this->Name = L"MyForm2";
 			this->Text = L"MyForm2";
+			this->Load += gcnew System::EventHandler(this, &MyForm2::MyForm2_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
-		array<String^, 2>^ matriz = gcnew array<String^, 2>(3,241);
-	private: System::Void btn_Importar_Click(System::Object^ sender, System::EventArgs^ e) {		
+		array<String^, 2>^ matriz = gcnew array<String^, 2>(3, 241);
+		
+private: System::Void btn_Importar_Click(System::Object^ sender, System::EventArgs^ e) {		
 		ofd_Importar->Filter = "Archivos separados por coma (csv) | *.csv";
 		ofd_Importar->FileName = "";
 	
@@ -219,121 +246,187 @@ namespace Lab4CarlosLaparra1031120 {
 				, MessageBoxButtons::OK
 				, MessageBoxIcon::Exclamation);
 		}
-	}
-		   void BubbleSort(array<String^, 2>^ matr, int n) {
-			   String^ aux1;
-			   String^ aux2;
-			   int aux, i, j;
-			   for (i = 1; i < n - 1; i++) {
-
-				   // Last i elements are already in place  
-				   for (j = 1; j < n; j++)
-					   if (Convert::ToInt32(matr[2, i]) > Convert::ToInt32(matr[2, j])) {
-						   aux = Convert::ToInt32(matr[2, i]);
-						   matr[2, i] = matr[2, j];
-						   matr[2,j] = Convert::ToString(aux);
-
-						   aux1 = matriz[1, i];
-						   matr[1, i] = matr[1, j];
-						   matr[1, j] = aux1;
-
-						   aux2 = matriz[0, i];
-						   matr[0, i] = matr[0, j];
-						   matr[0, j] = aux2;
-					   }
-			   }
-			   Vaciar();
-			   Reescribir(matr);
-		   }		   		   
-		   void Vaciar() {
-			   rtb_Casos->Text="";
-			   rt_1->Text = "";
-			   rt_2->Text = "";
-		   }
-		   void Reescribir(array<String^, 2>^ matr) {
-
-			   for (int i = 0; i < 241; i++) {
-				   for (int j = 0; j < 3; j++) {
-					   if (j == 0) {
-						   rtb_Casos->Text += Convert::ToString(matriz[j, i]);
-					   }
-					   else if (j == 1) {
-						   rt_1->Text += Convert::ToString(matriz[j, i]);
-					   }
-					   else {
-						   rt_2->Text += Convert::ToString(matriz[j, i]);
-					   }
-				   }
-				   rtb_Casos->Text += "\r\n";
-				   rt_1->Text += "\r\n";
-				   rt_2->Text += "\r\n";
-			   }
-		   }
-			   
-	private: System::Void btn_Quick_Click(System::Object^ sender, System::EventArgs^ e) {
-		int start = Convert::ToInt32(matriz[2, 1]);
-		int end = Convert::ToInt32(matriz[2, 240]);
-		int n = Convert::ToInt32(matriz[2,end])/ Convert::ToInt32(matriz[2,1]);;
-		QuickSort(matriz,1,n-1);
-		Vaciar();
-		Reescribir(matriz);
-
+	}		   			   
+private: System::Void btn_Quick_Click(System::Object^ sender, System::EventArgs^ e) {	
+	QuickSort(matriz,1,241-1);
+	Vaciar();
+	Reescribir(matriz);
 	}
 private: System::Void btn_Bubble_Click(System::Object^ sender, System::EventArgs^ e) {
-	BubbleSort(matriz,241);
+	BubbleSort(matriz,241);	
 }
 private: System::Void btn_Merge_Click(System::Object^ sender, System::EventArgs^ e) {	
-	
+	MergeSort(matriz, 1, 241 - 1);
+	Vaciar();
+	Reescribir(matriz);
 }
-	   void QuickSort(array<String^, 2>^ matr, int start, int end) {
-		   int pivot;
-		   if (start < end) {
-			   pivot = dividir(matr, start, end);
-
+	   void QuickSort(array<String^, 2>^ matr, int start, int end) {		   
+		   if (start < end)
+		   {
+			   int pivot = dividir(matr, start, end);
 			   QuickSort(matr, start, pivot - 1);
-
 			   QuickSort(matr, pivot + 1, end);
-
-
 		   }
 	   }
 	   int dividir(array<String^, 2>^ matr, int start, int end) {
-		   int pivot = Convert::ToInt32(matriz[2, end]);
-		   int i = (start - 1);
-
-
-		   for (int j = start; j < end; j++) {
-			   if (Convert::ToInt32(matriz[2, j]) <= pivot) {
-				   i++;
-				   int t = Convert::ToInt32(matriz[2, i]);
-				   matriz[2, i] = matriz[2, j];
-				   matriz[2, j] = Convert::ToString(t);
-				   String^ aux1;
-				   String^ aux2;
-				   aux1 = matriz[1, i];
+		   int pivot = Convert::ToInt32(matr[2,end]);   
+		   int i = start-1;   
+		   for (int j = start; j < end - 1; j++)
+		   {			   
+			   if (Convert::ToInt32(matr[2,j]) < pivot)
+			   {
+				   i++;  				   
+				   int temp = Convert::ToInt32(matr[2, i]);
+				   matr[2, i] = matr[2, j];
+				   matr[2, j] = Convert::ToString(temp);
+				   String^ aux;
+				   String^ auxx;
+				   aux = matr[1, i];
 				   matr[1, i] = matr[1, j];
-				   matr[1, j] = aux1;
-
-				   aux2 = matriz[0, i];
+				   matr[1, j] = aux;
+				   aux = matr[0, i];
 				   matr[0, i] = matr[0, j];
-				   matr[0, j] = aux2;
+				   matr[0, j] = aux;
+
 
 			   }
+		   }	
+		   int temp1 = Convert::ToInt32(matr[2,i + 1]);
+		   matr[2, i + 1] = matr[2, end];
+		   matr[2, end] = Convert::ToString(temp1);
+		   String^ aux1;
+		   String^ auxx1;
+		   aux1 = matr[1, i+1];
+		   matr[1, i+1] = matr[1, end];
+		   matr[1, end] = aux1;
+		   auxx1 = matr[0, i+1];
+		   matr[0, i+1] = matr[0, end];
+		   matr[0, end] = auxx1;
+		   return (i + 1);
+	   }	
+	   void BubbleSort(array<String^, 2>^ matr, int n) {
+		   String^ aux1;
+		   String^ aux2;
+		   int aux, i, j;
+		   for (i = 1; i < n - 1; i++) {
 
-			   int t = Convert::ToInt32(matriz[2, i]);
-			   matriz[2, i] = matriz[2, j];
-			   matriz[2, j] = Convert::ToString(t);
-			   String^ aux1;
-			   String^ aux2;
-			   aux1 = matriz[1, i];
-			   matr[1, i] = matr[1, j];
-			   matr[1, j] = aux1;
+			   // Last i elements are already in place  
+			   for (j = 1; j < n; j++)
+				   if (Convert::ToInt32(matr[2, i]) > Convert::ToInt32(matr[2, j])) {
+					   aux = Convert::ToInt32(matr[2, i]);
+					   matr[2, i] = matr[2, j];
+					   matr[2, j] = Convert::ToString(aux);
 
-			   aux2 = matriz[0, i];
-			   matr[0, i] = matr[0, j];
-			   matr[0, j] = aux2;
-			   return (i + 1);
+					   aux1 = matriz[1, i];
+					   matr[1, i] = matr[1, j];
+					   matr[1, j] = aux1;
+
+					   aux2 = matriz[0, i];
+					   matr[0, i] = matr[0, j];
+					   matr[0, j] = aux2;
+				   }
+		   }
+		   Vaciar();
+		   Reescribir(matr);
+	   }
+	   void MergeSort(array<String^, 2>^ matr, int n1, int n2) {
+		   if (n1 < n2) {
+			   int aux = (n1 + (n2 - 1)) / 2;
+			   MergeSort(matr, n1, aux);
+			   MergeSort(matr, aux+ 1, n2);
+
+			   
+			   Merge(matr, n1, aux, n2);
 		   }
 	   }
+	   void Merge(array<String^, 2>^ matr, int n1, int n2, int n3) {
+		   //p=n1,q=n2,r=n3,a1=n1,a2=n2,p1=l,p2=M
+		   int a1 = n2 - n1 + 1;
+		   int a2 = n3 - n2;
+
+		   array<Int32^>^ p1 = gcnew array<Int32^>(a1);
+		   array<Int32^>^ p2 = gcnew array<Int32^>(a2);
+		   array<String^>^ h1 = gcnew array<String^>(a1);
+		   array<String^>^ h2 = gcnew array<String^>(a2);
+		   array<String^>^ j1 = gcnew array<String^>(a1);
+		   array<String^>^ j2 = gcnew array<String^>(a2);
+		   for (int i = 0; i < a1; i++) {
+			   p1[i] = Convert::ToInt32(matr[2, n1 + i]);
+			   h1[i] = (matr[1, n1 + i]);
+			   j1[i] = (matr[0, n1 + i]);
+		   }
+		   for (int j = 0; j < a2; j++) {
+			   p2[j] = Convert::ToInt32(matr[2, n2 + 1 + j]);
+			   h2[j] = (matr[1, n2 + 1 + j]);
+			   j2[j] =(matr[0, n2 + 1 + j]);
+		   }
+		   
+		   int i, j, k;
+		   i = 0;
+		   j = 0;
+		   k = n1;
+
+		   while (i < a1 && j < a2) {
+			   if (Convert::ToInt32(p1[i]) <= Convert::ToInt32(p2[j])) {
+				   matr[2,k] = Convert::ToString(p1[i]);
+				   matr[1, k] = (h1[i]);
+				   matr[0, k] = (j1[i]);
+				   i++;
+			   }
+			   else {
+				   matr[2,k] = Convert::ToString(p2[j]);
+				   matr[1, k] = (h2[j]);
+				   matr[0, k] = (j2[j]);
+				   j++;
+			   }
+			   k++;
+		   }
+
+		   
+		   while (i < a1) {
+			   matr[2,k] = Convert::ToString(p1[i]);
+			   matr[1, k] = (h1[i]);
+			   matr[0, k] = (j1[i]);
+			   i++;
+			   k++;
+		   }
+
+		   while (j < a2) {
+			   matr[2,k] = Convert::ToString(p2[j]);
+			   matr[1, k] = (h2[j]);
+			   matr[0, k] = (j2[j]);
+			   j++;
+			   k++;
+		   }
+	   }
+	   void Vaciar() {
+		   rtb_Casos->Text = "";
+		   rt_1->Text = "";
+		   rt_2->Text = "";
+	   }
+	   void Reescribir(array<String^, 2>^ matr) {
+
+		   for (int i = 0; i < 241; i++) {
+			   for (int j = 0; j < 3; j++) {
+				   if (j == 0) {
+					   rtb_Casos->Text += Convert::ToString(matriz[j, i]);
+				   }
+				   else if (j == 1) {
+					   rt_1->Text += Convert::ToString(matriz[j, i]);
+				   }
+				   else {
+					   rt_2->Text += Convert::ToString(matriz[j, i]);
+				   }
+			   }
+			   rtb_Casos->Text += "\r\n";
+			   rt_1->Text += "\r\n";
+			   rt_2->Text += "\r\n";
+		   }
+	   }
+	   
+private: System::Void timer_Tick(System::Object^ sender, System::EventArgs^ e) {	
+}
+private: System::Void MyForm2_Load(System::Object^ sender, System::EventArgs^ e) {
+}
 };
 }
