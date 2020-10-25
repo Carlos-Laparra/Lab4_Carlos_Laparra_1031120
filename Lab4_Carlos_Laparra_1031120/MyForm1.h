@@ -1,3 +1,4 @@
+#include"Lista.h"
 #pragma once
 
 namespace Lab4CarlosLaparra1031120 {
@@ -16,12 +17,14 @@ namespace Lab4CarlosLaparra1031120 {
 	public ref class MyForm1 : public System::Windows::Forms::Form
 	{
 	public:
+		Lista* lista1;
 		MyForm1(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: agregar código de constructor aquí
-			//
+			lista1 = new Lista();
+			lista1->conta = 0;
+			lista1->start = nullptr;
+			lista1->end = nullptr;
 		}
 
 	protected:
@@ -36,6 +39,8 @@ namespace Lab4CarlosLaparra1031120 {
 			}
 		}
 	private: System::Windows::Forms::Label^ lbl_Covid;
+	private: System::Windows::Forms::OpenFileDialog^ ofd_Importar;
+	private: System::Windows::Forms::Button^ btn_Importar;
 	protected:
 
 	private:
@@ -53,6 +58,8 @@ namespace Lab4CarlosLaparra1031120 {
 		{
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm1::typeid));
 			this->lbl_Covid = (gcnew System::Windows::Forms::Label());
+			this->ofd_Importar = (gcnew System::Windows::Forms::OpenFileDialog());
+			this->btn_Importar = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// lbl_Covid
@@ -67,6 +74,20 @@ namespace Lab4CarlosLaparra1031120 {
 			this->lbl_Covid->TabIndex = 3;
 			this->lbl_Covid->Text = L"Covid 19";
 			// 
+			// ofd_Importar
+			// 
+			this->ofd_Importar->FileName = L"openFileDialog1";
+			// 
+			// btn_Importar
+			// 
+			this->btn_Importar->Location = System::Drawing::Point(22, 119);
+			this->btn_Importar->Name = L"btn_Importar";
+			this->btn_Importar->Size = System::Drawing::Size(122, 34);
+			this->btn_Importar->TabIndex = 4;
+			this->btn_Importar->Text = L"Importar";
+			this->btn_Importar->UseVisualStyleBackColor = true;
+			this->btn_Importar->Click += gcnew System::EventHandler(this, &MyForm1::btn_Importar_Click);
+			// 
 			// MyForm1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
@@ -74,6 +95,7 @@ namespace Lab4CarlosLaparra1031120 {
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->ClientSize = System::Drawing::Size(640, 456);
+			this->Controls->Add(this->btn_Importar);
 			this->Controls->Add(this->lbl_Covid);
 			this->Name = L"MyForm1";
 			this->Text = L"MyForm1";
@@ -83,11 +105,39 @@ namespace Lab4CarlosLaparra1031120 {
 
 		}
 #pragma endregion
-		
-
-
+		array<String^, 2>^ matriz = gcnew array<String^, 2>(12, 216);
 	private: System::Void MyForm1_Load(System::Object^ sender, System::EventArgs^ e) {
 		
+	}
+	private: System::Void btn_Importar_Click(System::Object^ sender, System::EventArgs^ e) {
+		ofd_Importar->Filter = "Archivos separados por coma (csv) | *.csv";
+		ofd_Importar->FileName = "";
+
+		if (ofd_Importar->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+			array<String^>^ archivoLineas = File::ReadAllLines(ofd_Importar->FileName);
+
+			if (archivoLineas->Length > 0) {
+				array<String^>^ archivoColumna = archivoLineas[0]->Split(';');
+				if (archivoColumna->Length > 0) {
+					int cantidadColumnas = archivoColumna->Length;
+					for (int i = 0; i < archivoLineas->Length; i++) {
+						array<String^>^ fila = archivoLineas[i]->Split(';');
+						int j = 0;
+						for (int j = 0; j < fila->Length; j++) {
+							matriz[j, i] = fila[j];							
+						}					
+					}
+
+				}
+			}
+
+		}
+		else {
+			MessageBox::Show("No se seleccionó ningún archivo"
+				, "Archivo no seleccionado"
+				, MessageBoxButtons::OK
+				, MessageBoxIcon::Exclamation);
+		}
 	}
 	};
 }
