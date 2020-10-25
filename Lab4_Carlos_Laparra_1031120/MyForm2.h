@@ -69,6 +69,7 @@ namespace Lab4CarlosLaparra1031120 {
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
+			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm2::typeid));
 			this->lbl_Violencia = (gcnew System::Windows::Forms::Label());
 			this->ofd_Importar = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->btn_Importar = (gcnew System::Windows::Forms::Button());
@@ -181,8 +182,9 @@ namespace Lab4CarlosLaparra1031120 {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
-			this->ClientSize = System::Drawing::Size(758, 463);
+			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
+			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->ClientSize = System::Drawing::Size(758, 497);
 			this->Controls->Add(this->lbl_tiempo);
 			this->Controls->Add(this->btn_Bubble);
 			this->Controls->Add(this->btn_Merge);
