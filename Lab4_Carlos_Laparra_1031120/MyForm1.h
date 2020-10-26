@@ -9,6 +9,7 @@ namespace Lab4CarlosLaparra1031120 {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::IO;
 	
 
 	/// <summary>
@@ -41,6 +42,12 @@ namespace Lab4CarlosLaparra1031120 {
 	private: System::Windows::Forms::Label^ lbl_Covid;
 	private: System::Windows::Forms::OpenFileDialog^ ofd_Importar;
 	private: System::Windows::Forms::Button^ btn_Importar;
+	private: System::Windows::Forms::DataGridView^ dgv_Tablero;
+	private: System::Windows::Forms::ComboBox^ comboBox1;
+	private: System::Windows::Forms::Button^ btn_QuickSort;
+	private: System::Windows::Forms::Button^ btn_BubbleSort;
+	private: System::Windows::Forms::DataGridView^ dgv_Dato;
+
 	protected:
 
 	private:
@@ -56,10 +63,16 @@ namespace Lab4CarlosLaparra1031120 {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm1::typeid));
 			this->lbl_Covid = (gcnew System::Windows::Forms::Label());
 			this->ofd_Importar = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->btn_Importar = (gcnew System::Windows::Forms::Button());
+			this->dgv_Tablero = (gcnew System::Windows::Forms::DataGridView());
+			this->comboBox1 = (gcnew System::Windows::Forms::ComboBox());
+			this->btn_QuickSort = (gcnew System::Windows::Forms::Button());
+			this->btn_BubbleSort = (gcnew System::Windows::Forms::Button());
+			this->dgv_Dato = (gcnew System::Windows::Forms::DataGridView());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dgv_Tablero))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dgv_Dato))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// lbl_Covid
@@ -68,7 +81,7 @@ namespace Lab4CarlosLaparra1031120 {
 			this->lbl_Covid->BackColor = System::Drawing::Color::Transparent;
 			this->lbl_Covid->Font = (gcnew System::Drawing::Font(L"Nobile", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lbl_Covid->Location = System::Drawing::Point(245, 34);
+			this->lbl_Covid->Location = System::Drawing::Point(445, 31);
 			this->lbl_Covid->Name = L"lbl_Covid";
 			this->lbl_Covid->Size = System::Drawing::Size(120, 38);
 			this->lbl_Covid->TabIndex = 3;
@@ -88,24 +101,89 @@ namespace Lab4CarlosLaparra1031120 {
 			this->btn_Importar->UseVisualStyleBackColor = true;
 			this->btn_Importar->Click += gcnew System::EventHandler(this, &MyForm1::btn_Importar_Click);
 			// 
+			// dgv_Tablero
+			// 
+			this->dgv_Tablero->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::Fill;
+			this->dgv_Tablero->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dgv_Tablero->ColumnHeadersVisible = false;
+			this->dgv_Tablero->Location = System::Drawing::Point(159, 109);
+			this->dgv_Tablero->Name = L"dgv_Tablero";
+			this->dgv_Tablero->RowHeadersVisible = false;
+			this->dgv_Tablero->RowHeadersWidth = 62;
+			this->dgv_Tablero->RowTemplate->Height = 28;
+			this->dgv_Tablero->Size = System::Drawing::Size(937, 308);
+			this->dgv_Tablero->TabIndex = 5;
+			// 
+			// comboBox1
+			// 
+			this->comboBox1->FormattingEnabled = true;
+			this->comboBox1->Items->AddRange(gcnew cli::array< System::Object^  >(10) {
+				L"1", L"2", L"3", L"4", L"5", L"6", L"7", L"8",
+					L"9", L"10"
+			});
+			this->comboBox1->Location = System::Drawing::Point(22, 180);
+			this->comboBox1->Name = L"comboBox1";
+			this->comboBox1->Size = System::Drawing::Size(121, 28);
+			this->comboBox1->TabIndex = 6;
+			this->comboBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm1::comboBox1_SelectedIndexChanged);
+			// 
+			// btn_QuickSort
+			// 
+			this->btn_QuickSort->Location = System::Drawing::Point(1102, 119);
+			this->btn_QuickSort->Name = L"btn_QuickSort";
+			this->btn_QuickSort->Size = System::Drawing::Size(122, 34);
+			this->btn_QuickSort->TabIndex = 7;
+			this->btn_QuickSort->Text = L"Quick Sort";
+			this->btn_QuickSort->UseVisualStyleBackColor = true;
+			this->btn_QuickSort->Click += gcnew System::EventHandler(this, &MyForm1::btn_QuickSort_Click);
+			// 
+			// btn_BubbleSort
+			// 
+			this->btn_BubbleSort->Location = System::Drawing::Point(1102, 174);
+			this->btn_BubbleSort->Name = L"btn_BubbleSort";
+			this->btn_BubbleSort->Size = System::Drawing::Size(122, 34);
+			this->btn_BubbleSort->TabIndex = 8;
+			this->btn_BubbleSort->Text = L"Bubble Sort";
+			this->btn_BubbleSort->UseVisualStyleBackColor = true;
+			// 
+			// dgv_Dato
+			// 
+			this->dgv_Dato->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::Fill;
+			this->dgv_Dato->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dgv_Dato->ColumnHeadersVisible = false;
+			this->dgv_Dato->Location = System::Drawing::Point(1252, 109);
+			this->dgv_Dato->Name = L"dgv_Dato";
+			this->dgv_Dato->RowHeadersVisible = false;
+			this->dgv_Dato->RowHeadersWidth = 62;
+			this->dgv_Dato->RowTemplate->Height = 28;
+			this->dgv_Dato->Size = System::Drawing::Size(221, 308);
+			this->dgv_Dato->TabIndex = 9;
+			// 
 			// MyForm1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
-			this->ClientSize = System::Drawing::Size(640, 456);
+			this->ClientSize = System::Drawing::Size(1524, 456);
+			this->Controls->Add(this->dgv_Dato);
+			this->Controls->Add(this->btn_BubbleSort);
+			this->Controls->Add(this->btn_QuickSort);
+			this->Controls->Add(this->comboBox1);
+			this->Controls->Add(this->dgv_Tablero);
 			this->Controls->Add(this->btn_Importar);
 			this->Controls->Add(this->lbl_Covid);
 			this->Name = L"MyForm1";
 			this->Text = L"MyForm1";
 			this->Load += gcnew System::EventHandler(this, &MyForm1::MyForm1_Load);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dgv_Tablero))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dgv_Dato))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
-		array<String^, 2>^ matriz = gcnew array<String^, 2>(12, 216);
+		array<String^, 2>^ listiz = gcnew array<String^, 2>(12, 217);
+		int v1;
 	private: System::Void MyForm1_Load(System::Object^ sender, System::EventArgs^ e) {
 		
 	}
@@ -124,7 +202,7 @@ namespace Lab4CarlosLaparra1031120 {
 						array<String^>^ fila = archivoLineas[i]->Split(';');
 						int j = 0;
 						for (int j = 0; j < fila->Length; j++) {
-							matriz[j, i] = fila[j];							
+							listiz[j, i] = fila[j];							
 						}					
 					}
 
@@ -138,6 +216,100 @@ namespace Lab4CarlosLaparra1031120 {
 				, MessageBoxButtons::OK
 				, MessageBoxIcon::Exclamation);
 		}
+		Llenar_DGV();
 	}
-	};
+		   void Llenar_DGV() {
+			   for (int i = 0; i < 12; i++) {
+				   DataGridViewColumn^ nuevacolumna = gcnew DataGridViewColumn();
+				   nuevacolumna->Width = 20;
+				   //Le agrega el tipo de columna que será
+				   DataGridViewCell^ cellTemplate = gcnew DataGridViewTextBoxCell();
+				   nuevacolumna->CellTemplate = cellTemplate;
+				   //Inserta la columna
+				   dgv_Tablero->Columns->Add(nuevacolumna);
+			   }
+
+			   //Agrega las filas de manera dinámica
+			   for (int i = 0; i < 216; i++) {
+				   dgv_Tablero->Rows->Add();
+			   }
+
+			   //Llena el DatagridView
+			   for (int i = 0; i < 12; i++) {
+				   for (int j = 0; j < 216; j++) {
+					   dgv_Tablero->Rows[j]->Cells[i]->Value = listiz[i,j];
+				   }
+			   }
+		   }
+	private: System::Void listBox1_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {		
+	}
+private: System::Void comboBox1_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+	v1 = comboBox1->SelectedIndex;
+	llenarlista();
+	v1 = 0;
+}
+	   void llenarlista() {
+		   for (int i = 1; i < 216; i++) {
+			   try {
+				   lista1->InsertAtEnd(Convert::ToInt32(listiz[v1 + 2, i]));
+			   }
+			   catch (Exception^ e) {
+				   lista1->InsertAtEnd(0);
+			   }
+		   }
+	   }
+	   void QuickSort(Lista* list, int start, int end) {
+		   if (start < end)
+		   {
+			   int pivot = dividir(list, start, end);
+			   QuickSort(list, start, pivot - 1);
+			   QuickSort(list, pivot + 1, end);
+		   }
+	   }
+	   int dividir(Lista* list, int start, int end) {
+		   int pivot = list->GetValue(end);
+		   int i = start - 1;
+		   for (int j = start; j < end - 1; j++)
+		   {
+			   if (list->GetValue(j) < pivot)
+			   {
+				   i++;
+				   int temp = list->GetValue(i);
+				   list->ExtractAtPosition(i);
+				   list->InsertAtPosition(i,j);				   
+				   list->ExtractAtPosition(j);
+				   list->InsertAtPosition(temp, j);
+			   }
+		   }		   
+
+		   int temp1 = list->GetValue(i+1);
+		   list->ExtractAtPosition(i+1);
+		   list->InsertAtPosition(i, end);
+		   list->ExtractAtPosition(end);
+		   list->InsertAtPosition(temp1, end);
+		   
+		   return (i + 1);
+	   }
+private: System::Void btn_QuickSort_Click(System::Object^ sender, System::EventArgs^ e) {
+	QuickSort(lista1, 1, 214);
+	llenar_DGV1();
+}
+	   void llenar_DGV1() {
+		   for (int i = 0; i < 1; i++) {
+			   DataGridViewColumn^ nuevacolumna = gcnew DataGridViewColumn();
+			   nuevacolumna->Width = 20;			   
+			   DataGridViewCell^ cellTemplate = gcnew DataGridViewTextBoxCell();
+			   nuevacolumna->CellTemplate = cellTemplate;			   
+			   dgv_Dato->Columns->Add(nuevacolumna);
+		   }
+
+		   //Agrega las filas de manera dinámica
+		   for (int i = 0; i < 216; i++) {
+			   dgv_Dato->Rows->Add();
+		   }
+		   for (int i = 0; i < 215; i++) {
+			   dgv_Dato->Rows[i]->Cells[0]->Value = lista1->GetValue(i);
+		   }
+	   }
+};
 }
