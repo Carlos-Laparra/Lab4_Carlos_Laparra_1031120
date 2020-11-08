@@ -47,6 +47,9 @@ namespace Lab4CarlosLaparra1031120 {
 	private: System::Windows::Forms::Button^ btn_QuickSort;
 	private: System::Windows::Forms::Button^ btn_BubbleSort;
 	private: System::Windows::Forms::DataGridView^ dgv_Dato;
+	private: System::Windows::Forms::Label^ label1;
+	private: System::Windows::Forms::Label^ label2;
+	private: System::Windows::Forms::Label^ label3;
 
 	protected:
 
@@ -71,6 +74,9 @@ namespace Lab4CarlosLaparra1031120 {
 			this->btn_QuickSort = (gcnew System::Windows::Forms::Button());
 			this->btn_BubbleSort = (gcnew System::Windows::Forms::Button());
 			this->dgv_Dato = (gcnew System::Windows::Forms::DataGridView());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->label3 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dgv_Tablero))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dgv_Dato))->BeginInit();
 			this->SuspendLayout();
@@ -118,10 +124,10 @@ namespace Lab4CarlosLaparra1031120 {
 			// 
 			this->comboBox1->FormattingEnabled = true;
 			this->comboBox1->Items->AddRange(gcnew cli::array< System::Object^  >(10) {
-				L"1", L"2", L"3", L"4", L"5", L"6", L"7", L"8",
-					L"9", L"10"
+				L"Total Cases\t", L"Total Deaths", L"Total Recoveries",
+					L"Active Cases", L"Serious, Critical", L"Total Cases / 1M pop", L"Deaths / 1M pop", L"Total Tests", L"Tests / 1M pop", L"Population"
 			});
-			this->comboBox1->Location = System::Drawing::Point(22, 180);
+			this->comboBox1->Location = System::Drawing::Point(22, 226);
 			this->comboBox1->Name = L"comboBox1";
 			this->comboBox1->Size = System::Drawing::Size(121, 28);
 			this->comboBox1->TabIndex = 6;
@@ -145,6 +151,7 @@ namespace Lab4CarlosLaparra1031120 {
 			this->btn_BubbleSort->TabIndex = 8;
 			this->btn_BubbleSort->Text = L"Bubble Sort";
 			this->btn_BubbleSort->UseVisualStyleBackColor = true;
+			this->btn_BubbleSort->Click += gcnew System::EventHandler(this, &MyForm1::btn_BubbleSort_Click);
 			// 
 			// dgv_Dato
 			// 
@@ -159,12 +166,42 @@ namespace Lab4CarlosLaparra1031120 {
 			this->dgv_Dato->Size = System::Drawing::Size(221, 308);
 			this->dgv_Dato->TabIndex = 9;
 			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(1098, 31);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(231, 20);
+			this->label1->TabIndex = 10;
+			this->label1->Text = L"Elegir método de ordenamiento";
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Location = System::Drawing::Point(12, 277);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(102, 40);
+			this->label2->TabIndex = 11;
+			this->label2->Text = L"Elegir dato a \r\nordenar";
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Location = System::Drawing::Point(1098, 226);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(136, 60);
+			this->label3->TabIndex = 12;
+			this->label3->Text = L"Los 0 simbolizan \r\ndatos que no son \r\nnuméricos";
+			// 
 			// MyForm1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->ClientSize = System::Drawing::Size(1524, 456);
+			this->Controls->Add(this->label3);
+			this->Controls->Add(this->label2);
+			this->Controls->Add(this->label1);
 			this->Controls->Add(this->dgv_Dato);
 			this->Controls->Add(this->btn_BubbleSort);
 			this->Controls->Add(this->btn_QuickSort);
@@ -188,6 +225,7 @@ namespace Lab4CarlosLaparra1031120 {
 		
 	}
 	private: System::Void btn_Importar_Click(System::Object^ sender, System::EventArgs^ e) {
+		ReestablecerMatriz();
 		ofd_Importar->Filter = "Archivos separados por coma (csv) | *.csv";
 		ofd_Importar->FileName = "";
 
@@ -249,7 +287,8 @@ private: System::Void comboBox1_SelectedIndexChanged(System::Object^ sender, Sys
 	v1 = 0;
 }
 	   void llenarlista() {
-		   for (int i = 1; i < 216; i++) {
+		   lista1->Limpiar();
+		   for (int i = 0; i < 216; i++) {
 			   try {
 				   lista1->InsertAtEnd(Convert::ToInt32(listiz[v1 + 2, i]));
 			   }
@@ -307,9 +346,40 @@ private: System::Void btn_QuickSort_Click(System::Object^ sender, System::EventA
 		   for (int i = 0; i < 216; i++) {
 			   dgv_Dato->Rows->Add();
 		   }
-		   for (int i = 0; i < 215; i++) {
+		   for (int i = 0; i < 216; i++) {
 			   dgv_Dato->Rows[i]->Cells[0]->Value = lista1->GetValue(i);
 		   }
 	   }
+	   void ReestablecerMatriz() {
+		   dgv_Tablero->Rows->Clear();
+		   dgv_Tablero->Columns->Clear();
+		   dgv_Tablero->ColumnHeadersVisible = false;
+		   dgv_Tablero->RowHeadersVisible = false;
+	   }
+	   void RMatriz(){
+		   dgv_Dato->Rows->Clear();
+		   dgv_Dato->Columns->Clear();
+		   dgv_Dato->ColumnHeadersVisible = false;
+		   dgv_Dato->RowHeadersVisible = false;
+	   }
+private: System::Void btn_BubbleSort_Click(System::Object^ sender, System::EventArgs^ e) {
+	Int32^ aux1;
+	Int32^ aux2;
+	int aux;
+	for (int i = 0; i < (lista1->conta - 1); i++) {
+
+		// Last i elements are already in place  
+		for (int j = 0; j < (lista1->conta-i-1); j++)
+			if (Convert::ToInt32(lista1->GetValue(j)) > Convert::ToInt32(lista1->GetValue(j+1))) {
+				aux = Convert::ToInt32(lista1->GetValue(j));			
+				lista1->InsertAtPosition(lista1->GetValue(j+1), j);				
+				lista1->ExtractAtPosition(j+1);
+				lista1->InsertAtPosition(aux, j+1);				
+				lista1->ExtractAtPosition(j + 2);
+			}
+	}
+	RMatriz();
+	llenar_DGV1();
+}
 };
 }
