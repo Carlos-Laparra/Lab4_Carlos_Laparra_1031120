@@ -313,24 +313,26 @@ private: System::Void comboBox1_SelectedIndexChanged(System::Object^ sender, Sys
 			   if (list->GetValue(j) < pivot)
 			   {
 				   i++;
-				   int temp = list->GetValue(i);
-				   list->ExtractAtPosition(i);
-				   list->InsertAtPosition(i,j);				   
-				   list->ExtractAtPosition(j);
-				   list->InsertAtPosition(temp, j);
+				   int aux = list->GetValue(i);
+				   list->InsertAtPosition(list->GetValue(j), i);
+				   list->ExtractAtPosition(i + 1);
+				   list->InsertAtPosition(aux, j);
+				   list->ExtractAtPosition(j+1);
 			   }
 		   }		   
 
-		   int temp1 = list->GetValue(i+1);
-		   list->ExtractAtPosition(i+1);
-		   list->InsertAtPosition(i, end);
-		   list->ExtractAtPosition(end);
-		   list->InsertAtPosition(temp1, end);
+		   int aux1 = list->GetValue(i + 1);
+		   list->InsertAtPosition(list->GetValue(end), i + 1);
+		   list->ExtractAtPosition(i + 2);
+		   list->InsertAtPosition(aux1, end);
+		   list->ExtractAtPosition(end + 1);
 		   
 		   return (i + 1);
 	   }
 private: System::Void btn_QuickSort_Click(System::Object^ sender, System::EventArgs^ e) {
-	QuickSort(lista1, 1, 214);
+	llenarlista();
+	QuickSort(lista1, 1, 216-1);
+	RMatriz();
 	llenar_DGV1();
 }
 	   void llenar_DGV1() {
@@ -362,9 +364,8 @@ private: System::Void btn_QuickSort_Click(System::Object^ sender, System::EventA
 		   dgv_Dato->ColumnHeadersVisible = false;
 		   dgv_Dato->RowHeadersVisible = false;
 	   }
-private: System::Void btn_BubbleSort_Click(System::Object^ sender, System::EventArgs^ e) {
-	Int32^ aux1;
-	Int32^ aux2;
+private: System::Void btn_BubbleSort_Click(System::Object^ sender, System::EventArgs^ e) {	
+	llenarlista();
 	int aux;
 	for (int i = 0; i < (lista1->conta - 1); i++) {
 
